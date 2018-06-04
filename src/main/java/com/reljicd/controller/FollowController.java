@@ -43,6 +43,23 @@ public class FollowController {
         Set<User> follernames = new HashSet();
         Optional<User> currentUser = userService.findByUsername(username);
         User user = currentUser.get();
+//        if (!followSet.isEmpty()){
+//            Iterator<Follow> iter = followSet.iterator();
+//            while (iter.hasNext()){
+//                Optional<User> optionalUser = userService.findByUsername(iter.next().getFollowUsername());
+//                User followeduser = optionalUser.get();
+//                follernames.add(followeduser);
+//            }
+//            Page<Post> posts = postService.findAllByUserInOrderedByDatePageable(follernames, page);
+//            Pager pager = new Pager(posts);
+//
+//            model.addAttribute("pager", pager);
+//            model.addAttribute("user", user);
+//
+//            return "/follow";
+//        }
+//        else{return "/nofollow"; }
+
         if (!followSet.isEmpty()){
             Iterator<Follow> iter = followSet.iterator();
             while (iter.hasNext()){
@@ -50,18 +67,16 @@ public class FollowController {
                 User followeduser = optionalUser.get();
                 follernames.add(followeduser);
             }
-            if (!follernames.isEmpty()) {
-                Page<Post> posts = postService.findAllByUserInOrderedByDatePageable(follernames, page);
-                Pager pager = new Pager(posts);
+            Page<Post> posts = postService.findAllByUserInOrderedByDatePageable(follernames, page);
+            Pager pager = new Pager(posts);
 
-                model.addAttribute("pager", pager);
-                model.addAttribute("user", user);
+            model.addAttribute("pager", pager);
+            model.addAttribute("user", user);
 
-                return "/follow";
-            } else {
-                return "/nofollow";
-            }
+            return "/follow";
         }
-        else{return "/nofollow"; }
+        else{
+            model.addAttribute("user", user);
+            return "/nofollow"; }
     }
 }
